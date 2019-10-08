@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Receita.Domain", "src\Receita.Domain\Receita.Domain.csproj", "{5DD32A8C-8E7C-4524-9700-3484512A4953}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Receita.API", "src\Receita.API\Receita.API.csproj", "{114F5434-611F-4D36-AFEE-30E45544D538}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Receita.Web", "ui\Receita.Web\Receita.Web.csproj", "{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{89893A12-EE44-4586-A006-47548D71DC76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{1664C86E-2884-4293-9C39-8B2E82CF9109}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DD32A8C-8E7C-4524-9700-3484512A4953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD32A8C-8E7C-4524-9700-3484512A4953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD32A8C-8E7C-4524-9700-3484512A4953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD32A8C-8E7C-4524-9700-3484512A4953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114F5434-611F-4D36-AFEE-30E45544D538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114F5434-611F-4D36-AFEE-30E45544D538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114F5434-611F-4D36-AFEE-30E45544D538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114F5434-611F-4D36-AFEE-30E45544D538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5DD32A8C-8E7C-4524-9700-3484512A4953} = {89893A12-EE44-4586-A006-47548D71DC76}
+		{114F5434-611F-4D36-AFEE-30E45544D538} = {89893A12-EE44-4586-A006-47548D71DC76}
+		{F9ABBE5A-CB36-412C-BD58-9AA223D9BC91} = {1664C86E-2884-4293-9C39-8B2E82CF9109}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6E826A4-280A-46D0-B767-9DCC9FA9FC8E}
+	EndGlobalSection
+EndGlobal
