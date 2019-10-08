@@ -3,13 +3,13 @@ using Receita.Domain.Model;
 
 namespace Receita.Domain.Repository
 {
-    public class UsuarioRepository : RepositoryBase<UsuarioAdm>
+    public class UsuarioRepository : RepositoryBase<Usuario>
     {
-        private readonly ReceitaContext _Context;
+        private readonly ReceitaContext _context;
 
-        public UsuarioRepository(ReceitaContext Context) : base(Context)
+        public UsuarioRepository(ReceitaContext context) : base(context)
         {
-            _Context = Context;
+            _context = context;
         }
     }
 }

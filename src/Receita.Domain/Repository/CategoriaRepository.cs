@@ -5,11 +5,11 @@ namespace Receita.Domain.Repository
 {
     public class CategoriaRepository : RepositoryBase<Categoria>
     {
-        private readonly ReceitaContext _Context;
+        private readonly ReceitaContext _context;
 
-        public CategoriaRepository(ReceitaContext Context) : base(Context)
+        public CategoriaRepository(ReceitaContext context) : base(context)
         {
-            _Context = Context;
+            _context = context;
         }
     }
 }

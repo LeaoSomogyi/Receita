@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Receita.Domain.Repository
+namespace Receita.Domain.Repository.Interfaces
 {
     public interface IRepositoryBase<T> where T : class
     {

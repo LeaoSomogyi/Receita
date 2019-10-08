@@ -1,4 +1,5 @@
 ﻿using Receita.Domain.Context;
+using Receita.Domain.Repository.Interfaces;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,64 +9,62 @@ namespace Receita.Domain.Repository
     public abstract class RepositoryBase<T> : IRepositoryBase<T>, IDisposable where T : class
     {
 
-        private ReceitaContext _Context;
+        private ReceitaContext _context;
 
         public RepositoryBase(ReceitaContext context)
         {
-            _Context = context;
+            _context = context;
         }
 
         public void Adicionar(T entity)
         {
-            _Context.Set<T>().Add(entity);
+            _context.Set<T>().Add(entity);
             Commit();
         }
 
         public void Atualizar(T entity)
         {
-            _Context.Set<T>().Update(entity);
+            _context.Set<T>().Update(entity);
             Commit();
         }
 
         public void Commit()
         {
-            _Context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void Deletar(Func<T, bool> predicate)
         {
-            _Context.Set<T>()
+            _context.Set<T>()
             .Where(predicate).ToList()
-            .ForEach(del => _Context.Set<T>().Remove(del));
-
+            .ForEach(del => _context.Set<T>().Remove(del));
         }
 
         public void Dispose()
         {
-            _Context.Dispose();
+            _context.Dispose();
         }
 
         public T Find(params object[] key)
         {
-            return _Context.Set<T>().Find(key);
+            return _context.Set<T>().Find(key);
         }
 
         public T First(Expression<Func<T, bool>> predicate)
         {
-            return _Context.Set<T>()
+            return _context.Set<T>()
                  .Where(predicate).FirstOrDefault();
-
 
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
         {
-            return _Context.Set<T>().Where(predicate);
+            return _context.Set<T>().Where(predicate);
         }
 
         public IQueryable<T> GetAll()
         {
-            return _Context.Set<T>();
+            return _context.Set<T>();
         }
     }
 }

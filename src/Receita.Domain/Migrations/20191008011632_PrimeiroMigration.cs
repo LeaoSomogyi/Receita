@@ -15,36 +15,36 @@ namespace Receita.Domain.Migrations
                 schema: "Receita",
                 columns: table => new
                 {
-                    IdCategoria = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Titulo = table.Column<string>(maxLength: 50, nullable: true),
                     Descricao = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IdCategoria", x => x.IdCategoria);
+                    table.PrimaryKey("Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "tbPapel",
+                name: "tbGrupo",
                 schema: "Receita",
                 columns: table => new
                 {
-                    IdPapel = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Desc_Papel = table.Column<string>(maxLength: 50, nullable: true)
+                    Descricao = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IdPapel", x => x.IdPapel);
+                    table.PrimaryKey("Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TbReceita",
+                name: "tbReceita",
                 schema: "Receita",
                 columns: table => new
                 {
-                    idReceita = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IdUsuario = table.Column<int>(maxLength: 20, nullable: false),
                     IdCategoria = table.Column<int>(maxLength: 400, nullable: false),
@@ -58,52 +58,52 @@ namespace Receita.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IdReceita", x => x.idReceita);
+                    table.PrimaryKey("Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TbStatus",
+                name: "tbStatus",
                 schema: "Receita",
                 columns: table => new
                 {
-                    IdStatus = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Desc_Status = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IdStatus", x => x.IdStatus);
+                    table.PrimaryKey("Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TbUsuariAdm",
+                name: "tbUsuario",
                 schema: "Receita",
                 columns: table => new
                 {
-                    IdUsuarioAdm = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(maxLength: 20, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: true),
-                    statusIdStatus = table.Column<int>(nullable: true),
+                    StatusId = table.Column<int>(nullable: true),
                     IdPapel = table.Column<int>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IdUsuarioAdm", x => x.IdUsuarioAdm);
+                    table.PrimaryKey("Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TbUsuariAdm_TbStatus_statusIdStatus",
-                        column: x => x.statusIdStatus,
+                        name: "FK_tbUsuario_tbStatus_StatusId",
+                        column: x => x.StatusId,
                         principalSchema: "Receita",
-                        principalTable: "TbStatus",
+                        principalTable: "tbStatus",
                         principalColumn: "IdStatus",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TbUsuariAdm_statusIdStatus",
+                name: "IX_tbUsuario_Status",
                 schema: "Receita",
-                table: "TbUsuariAdm",
-                column: "statusIdStatus");
+                table: "tbUsuario",
+                column: "StatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -117,15 +117,15 @@ namespace Receita.Domain.Migrations
                 schema: "Receita");
 
             migrationBuilder.DropTable(
-                name: "TbReceita",
+                name: "tbReceita",
                 schema: "Receita");
 
             migrationBuilder.DropTable(
-                name: "TbUsuariAdm",
+                name: "tbUsuario",
                 schema: "Receita");
 
             migrationBuilder.DropTable(
-                name: "TbStatus",
+                name: "tbStatus",
                 schema: "Receita");
         }
     }

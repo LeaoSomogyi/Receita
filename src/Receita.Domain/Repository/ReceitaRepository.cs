@@ -5,11 +5,11 @@ namespace Receita.Domain.Repository
 {
     public class ReceitaRepository : RepositoryBase<Models.Receita>
     {
-        private ReceitaContext DbContext;
+        private readonly ReceitaContext _context;
 
-        public ReceitaRepository(ReceitaContext Context) : base(Context)
+        public ReceitaRepository(ReceitaContext context) : base(context)
         {
-            DbContext = Context;
+            _context = context;
         }
     }
 }
