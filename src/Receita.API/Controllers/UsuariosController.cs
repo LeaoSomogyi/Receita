@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace Receita.API.Controllers
 {
-    [Route("api/status")]
+    [Route("api/usuarios")]
     [ApiController]
-    public class StatusController : ControllerBase
+    public class UsuariosController : ControllerBase
     {
         private readonly ReceitaContext _context;
 
-        public StatusController(ReceitaContext context)
+        public UsuariosController(ReceitaContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Status>> Get()
+        public ActionResult<IEnumerable<Usuario>> Get()
         {
             try
             {
-                var status = _context.Status.AsEnumerable();
-                return new OkObjectResult(status);
+                var usuarios = _context.Usuarios.AsEnumerable();
+                return new OkObjectResult(usuarios);
             }
             catch (Exception ex)
             {
@@ -35,17 +35,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Status>> Get(int id)
+        public async Task<ActionResult<Usuario>> Get(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
-                if (status != null)
+                var usuario = await _context.Usuarios.FindAsync(id);
+                if (usuario != null)
                 {
-                    return new OkObjectResult(status);
+                    return new OkObjectResult(usuario);    
                 }
 
-                return new NotFoundResult();
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -54,14 +54,14 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Status>> Post(Status status)
+        public async Task<ActionResult<Usuario>> Post(Usuario usuario)
         {
             try
             {
-                _context.Status.Add(status);
-                await _context.SaveChangesAsync();
+                _context.Usuarios.Add(usuario);
+                var total = await _context.SaveChangesAsync();
 
-                return new CreatedResult("", status);
+                return new OkObjectResult(usuario);
             }
             catch (Exception ex)
             {
@@ -70,13 +70,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Status status)
+        public async Task<IActionResult> Put(int id, Usuario usuario)
         {
             try
             {
-                status.Id = id;
-                _context.Update(status);
-                _context.Entry(status).State = EntityState.Modified;
+                usuario.Id = id;
+                _context.Update(usuario);
+                _context.Entry(usuario).State = EntityState.Modified;
                 var total = await _context.SaveChangesAsync();
 
                 if (total > 0)
@@ -93,16 +93,16 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Status>> Delete(int id)
+        public async Task<ActionResult<Usuario>> Delete(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
-                if (status != null)
+                var usuario = await _context.Usuarios.FindAsync(id);
+                if (usuario != null)
                 {
-                    _context.Status.Remove(status);
+                    _context.Usuarios.Remove(usuario);
                     await _context.SaveChangesAsync();
-
+                    
                     return new OkResult();
                 }
 
@@ -111,7 +111,7 @@ namespace Receita.API.Controllers
             catch (Exception ex)
             {
                 return new BadRequestObjectResult(ex);
-            }          
+            }
         }
     }
 }

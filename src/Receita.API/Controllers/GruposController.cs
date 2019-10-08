@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace Receita.API.Controllers
 {
-    [Route("api/status")]
+    [Route("api/grupos")]
     [ApiController]
-    public class StatusController : ControllerBase
+    public class GruposController : ControllerBase
     {
         private readonly ReceitaContext _context;
 
-        public StatusController(ReceitaContext context)
+        public GruposController(ReceitaContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Status>> Get()
+        public ActionResult<IEnumerable<Grupo>> Get()
         {
             try
             {
-                var status = _context.Status.AsEnumerable();
-                return new OkObjectResult(status);
+                var grupos = _context.Grupos.AsEnumerable();
+                return new OkObjectResult(grupos);
             }
             catch (Exception ex)
             {
@@ -35,14 +35,14 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Status>> Get(int id)
+        public async Task<ActionResult<Grupo>> Get(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
-                if (status != null)
+                var grupo = await _context.Grupos.FindAsync(id);
+                if (grupo != null)
                 {
-                    return new OkObjectResult(status);
+                    return new OkObjectResult(grupo);
                 }
 
                 return new NotFoundResult();
@@ -54,14 +54,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Status>> Post(Status status)
+        public async Task<ActionResult<Grupo>> Post(Grupo papel)
         {
             try
             {
-                _context.Status.Add(status);
+                _context.Grupos.Add(papel);
                 await _context.SaveChangesAsync();
-
-                return new CreatedResult("", status);
+                return new CreatedResult("", papel);
             }
             catch (Exception ex)
             {
@@ -70,20 +69,20 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Status status)
+        public async Task<ActionResult> Put(int id, Grupo grupo)
         {
             try
             {
-                status.Id = id;
-                _context.Update(status);
-                _context.Entry(status).State = EntityState.Modified;
+                grupo.Id = id;
+                _context.Update(grupo);
+                _context.Entry(grupo).State = EntityState.Modified;
                 var total = await _context.SaveChangesAsync();
 
-                if (total > 0)
+                if (total > 0) 
                 {
                     return new OkResult();
-                }
-
+                } 
+                
                 return new NotFoundResult();
             }
             catch (Exception ex)
@@ -93,14 +92,14 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Status>> Delete(int id)
+        public async Task<ActionResult<Grupo>> Delete(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
-                if (status != null)
+                var grupo = await _context.Grupos.FindAsync(id);
+                if (grupo != null)
                 {
-                    _context.Status.Remove(status);
+                    _context.Grupos.Remove(grupo);
                     await _context.SaveChangesAsync();
 
                     return new OkResult();
@@ -111,7 +110,7 @@ namespace Receita.API.Controllers
             catch (Exception ex)
             {
                 return new BadRequestObjectResult(ex);
-            }          
+            }
         }
     }
 }
