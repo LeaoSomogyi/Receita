@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Receita.Domain.Models;
-using Receita.Web.Util;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,17 +20,17 @@ namespace Receita.Web.Controllers
         }
 
         // GET: Categoria
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            HttpResponseMessage response = await catego.GetAsync("api/Categoria");
-            List<Categoria> categoria = await response.Content.ReadAsJsonAsync<List<Categoria>>();
+            //HttpResponseMessage response = await catego.GetAsync("api/Categoria");
+            //List<Categoria> categoria = await response.Content.ReadAsJsonAsync<List<Categoria>>();
 
-            if (response.IsSuccessStatusCode)
-            {
-                categoriUri = response.Headers.Location;
-                var cat = await response.Content.ReadAsAsync<List<Categoria>>();
-                return Ok(cat);
-            }
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    categoriUri = response.Headers.Location;
+            //    var cat = await response.Content.ReadAsAsync<List<Categoria>>();
+            //    return Ok(cat);
+            //}
             return View();
         }
 

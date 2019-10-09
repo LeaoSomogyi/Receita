@@ -19,9 +19,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Receita.Domain\Receita.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

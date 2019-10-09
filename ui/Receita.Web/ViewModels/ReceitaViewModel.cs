@@ -21,7 +21,7 @@ namespace Receita.Web.ViewModels
         [Display(Name = "Modo De Preparo")]
         public string ModoDePreparo { get; set; }
 
-        public string FotoBase64 { get; set; }
+        public string Foto { get; set; }
 
         public string Tag { get; set; }
 
