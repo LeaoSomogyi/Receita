@@ -1,4 +1,4 @@
-namespace Receita.Web.Models
+namespace Receita.Web.ViewModels
 {
     public class ErrorViewModel
     {

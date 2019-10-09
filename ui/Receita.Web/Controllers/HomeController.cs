@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Receita.Web.Models;
+using Receita.Web.ViewModels;
 using System.Diagnostics;
 
 namespace Receita.Web.Controllers

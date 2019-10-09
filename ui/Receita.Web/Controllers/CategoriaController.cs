@@ -25,13 +25,13 @@ namespace Receita.Web.Controllers
         // GET: Categoria
         public async Task<IActionResult> Index()
         {
-            HttpResponseMessage response = catego.GetAsync("api/Categoria").Result;
+            HttpResponseMessage response = await catego.GetAsync("api/Categoria");
             List<Categoria> categoria = await response.Content.ReadAsJsonAsync<List<Categoria>>();
 
             if (response.IsSuccessStatusCode)
             {
                 categoriUri = response.Headers.Location;
-                var cat = response.Content.ReadAsAsync<List<Categoria>>().Result;
+                var cat = await response.Content.ReadAsAsync<List<Categoria>>();
                 return Ok(cat);
             }
             return View();
