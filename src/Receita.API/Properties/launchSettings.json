@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/Receita",
+      "launchUrl": "api/receitas",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

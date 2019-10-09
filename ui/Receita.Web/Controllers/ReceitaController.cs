@@ -4,15 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Receita.Web.HttpClients.Interfaces;
 
 namespace Receita.Web.Controllers
 {
     public class ReceitaController : Controller
     {
-        // GET: Receita
-        public ActionResult Index()
+        private readonly IReceitaClient _receitaClient;
+
+        public ReceitaController(IReceitaClient receitaClient)
         {
-            return View();
+            _receitaClient = receitaClient;
+        }
+
+        // GET: Receita
+        public async Task<ActionResult> Index()
+        {
+            var receitas = await _receitaClient.GetReceitasAsync();
+
+            return View(receitas);
         }
 
         // GET: Receita/Details/5

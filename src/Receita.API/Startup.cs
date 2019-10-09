@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Receita.Domain.Infrastructure.Context;
 using Receita.Domain.IoC;
 using Swashbuckle.AspNetCore.Swagger;
@@ -32,7 +34,25 @@ namespace Receita.API
                     options.RespectBrowserAcceptHeader = true;
                 }
 
-                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                ).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(opt =>
+                {
+                    opt.SerializerSettings.ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    };
+
+                    opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    opt.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+                    opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    opt.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ss";
+                    opt.SerializerSettings.Culture = new System.Globalization.CultureInfo("en-US");
+                    opt.SerializerSettings.Formatting = Formatting.None;
+                    opt.SerializerSettings.FloatFormatHandling = FloatFormatHandling.DefaultValue;
+                    opt.SerializerSettings.FloatParseHandling = FloatParseHandling.Double;
+                    opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    opt.SerializerSettings.TypeNameHandling = TypeNameHandling.None;
+                });
 
             services.AddDbContext<ReceitaContext>(options =>
             {
@@ -65,8 +85,6 @@ namespace Receita.API
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Minha chave com pelo menos 16 cara")),
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(5),
-
-
                     };
                 });
         }
