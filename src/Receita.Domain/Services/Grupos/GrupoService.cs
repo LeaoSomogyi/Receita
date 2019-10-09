@@ -17,7 +17,7 @@ namespace Receita.Domain.Services.Grupos
 
         public async Task<int> AddAsync(Grupo grupo)
         {
-            if (grupo == null)
+            if (grupo != null)
             {
                 return await _repository.AddAsync(grupo);
             }
@@ -47,7 +47,7 @@ namespace Receita.Domain.Services.Grupos
 
         public async Task<int> UpdateAsync(Grupo grupo)
         {
-            if(grupo == null)
+            if(grupo != null)
             {
                 return await _repository.UpdateAsync(grupo);
             }

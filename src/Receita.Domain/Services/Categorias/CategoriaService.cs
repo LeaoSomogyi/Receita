@@ -17,7 +17,7 @@ namespace Receita.Domain.Services.Categorias
 
         public async Task<int> AddAsync(Categoria categoria)
         {
-            if (categoria == null)
+            if (categoria != null)
             {
                 return await _repository.AddAsync(categoria);
             }
@@ -47,7 +47,7 @@ namespace Receita.Domain.Services.Categorias
 
         public async Task<int> UpdateAsync(Categoria categoria)
         {
-            if(categoria == null)
+            if(categoria != null)
             {
                 return await _repository.UpdateAsync(categoria);
             }

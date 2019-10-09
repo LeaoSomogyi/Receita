@@ -33,7 +33,7 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetAsync(int id)
+        public async Task<ActionResult<Categoria>> GetByIdAsync(int id)
         {
             try
             {
@@ -54,12 +54,16 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Categoria>> PostAsync(Categoria categoria)
+        public async Task<ActionResult<Categoria>> PostAsync([FromBody] Categoria categoria)
         {
             try
             {
-                await _service.AddAsync(categoria);
-                return new CreatedResult("", categoria);
+                var total = await _service.AddAsync(categoria);
+                if (total > 0)
+                {
+                    return new CreatedResult("", categoria);
+                }
+                return new AcceptedResult();
             }
             catch (Exception ex)
             {
@@ -68,7 +72,7 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, Categoria categoria)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Categoria categoria)
         {
             try
             {
@@ -77,7 +81,7 @@ namespace Receita.API.Controllers
 
                 if (total > 0)
                 {
-                    return new OkResult();
+                    return new OkObjectResult(categoria);
                 }
 
                 return new NotFoundResult();

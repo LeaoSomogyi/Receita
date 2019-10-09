@@ -30,7 +30,7 @@ namespace Receita.Domain.Infrastructure.Repositories.Base
 
         public async Task<int> RemoveAsync(int id)
         {
-            var entity = GetById(id);
+            var entity = await GetById(id);
             if (entity != null)
             {
                 _context.Remove(entity);

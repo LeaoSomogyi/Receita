@@ -57,8 +57,11 @@ namespace Receita.API.Controllers
             try
             {
                 var total = await _service.AddAsync(usuario);
-
-                return new OkObjectResult(usuario);
+                if (total > 0)
+                {
+                    return new CreatedResult("", usuario);
+                }
+                return new AcceptedResult();
             }
             catch (Exception ex)
             {
@@ -76,7 +79,7 @@ namespace Receita.API.Controllers
 
                 if (total > 0)
                 {
-                    return new OkResult();
+                    return new OkObjectResult(usuario);
                 }
 
                 return new NotFoundResult();
