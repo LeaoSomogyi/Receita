@@ -1,9 +1,9 @@
 ﻿using Receita.Domain.Context;
-using Receita.Domain.Model;
+using Receita.Infrastructure.Repository;
 
-namespace Receita.Domain.Repository
+namespace Receita.Infrastructure.Repository
 {
-    public class StatusRepository : RepositoryBase<Status>
+    public class StatusRepository : RepositoryBase
     {
         private readonly ReceitaContext _context;
 

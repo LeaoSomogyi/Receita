@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Receita.Domain.Context;
-using Receita.Domain.Model;
+using Receita.Domain.Models;
+using Receita.Domain.Services.Status;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Receita.API.Controllers
@@ -13,19 +11,19 @@ namespace Receita.API.Controllers
     [ApiController]
     public class StatusController : ControllerBase
     {
-        private readonly ReceitaContext _context;
+        private readonly IStatusService _service;
 
-        public StatusController(ReceitaContext context)
+        public StatusController(IStatusService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Status>> Get()
+        public async Task<ActionResult<IList<Status>>> GetAsync()
         {
             try
             {
-                var status = _context.Status.AsEnumerable();
+                var status = await _service.GetAllAsync();
                 return new OkObjectResult(status);
             }
             catch (Exception ex)
@@ -35,11 +33,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Status>> Get(int id)
+        public async Task<ActionResult<Status>> GetByIdAsync(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
+                var status = await _service.GetByIdAsync(id);
                 if (status != null)
                 {
                     return new OkObjectResult(status);
@@ -54,12 +52,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Status>> Post(Status status)
+        public async Task<ActionResult<Status>> PostAsync(Status status)
         {
             try
             {
-                _context.Status.Add(status);
-                await _context.SaveChangesAsync();
+                await _service.AddAsync(status);
 
                 return new CreatedResult("", status);
             }
@@ -70,14 +67,12 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Status status)
+        public async Task<IActionResult> PutAsync(int id, Status status)
         {
             try
             {
                 status.Id = id;
-                _context.Update(status);
-                _context.Entry(status).State = EntityState.Modified;
-                var total = await _context.SaveChangesAsync();
+                var total = await _service.UpdateAsync(status);
 
                 if (total > 0)
                 {
@@ -93,16 +88,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Status>> Delete(int id)
+        public async Task<ActionResult<Status>> DeleteAsync(int id)
         {
             try
             {
-                var status = await _context.Status.FindAsync(id);
-                if (status != null)
+                var total = await _service.RemoveAsync(id);
+                if (total > 0)
                 {
-                    _context.Status.Remove(status);
-                    await _context.SaveChangesAsync();
-
                     return new OkResult();
                 }
 

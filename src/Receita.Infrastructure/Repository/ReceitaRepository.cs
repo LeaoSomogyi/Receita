@@ -1,7 +1,7 @@
 ﻿using Receita.Domain.Context;
-using Models = Receita.Domain.Model;
+using Receita.Domain.Repository;
 
-namespace Receita.Domain.Repository
+namespace Receita.Infrastructure.Repository
 {
     public class ReceitaRepository : RepositoryBase<Models.Receita>
     {

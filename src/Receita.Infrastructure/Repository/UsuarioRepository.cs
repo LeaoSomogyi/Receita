@@ -1,7 +1,6 @@
 ﻿using Receita.Domain.Context;
-using Receita.Domain.Model;
 
-namespace Receita.Domain.Repository
+namespace Receita.Infrastructure.Repository
 {
     public class UsuarioRepository : RepositoryBase<Usuario>
     {
