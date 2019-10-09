@@ -14,7 +14,6 @@ namespace Receita.Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Receita")
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -33,7 +32,7 @@ namespace Receita.Domain.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id")
-                        .HasName("Id");
+                        .HasName("Pk_Categoria_Id");
 
                     b.ToTable("tbCategoria");
                 });
@@ -50,7 +49,7 @@ namespace Receita.Domain.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id")
-                        .HasName("Id");
+                        .HasName("Pk_Grupo_Id");
 
                     b.ToTable("tbGrupo");
                 });
@@ -99,7 +98,7 @@ namespace Receita.Domain.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id")
-                        .HasName("Id");
+                        .HasName("Pk_Receita_Id");
 
                     b.ToTable("tbReceita");
                 });
@@ -116,7 +115,7 @@ namespace Receita.Domain.Migrations
                         .HasMaxLength(10);
 
                     b.HasKey("Id")
-                        .HasName("Id");
+                        .HasName("Pk_Status_Id");
 
                     b.ToTable("tbStatus");
                 });
@@ -141,7 +140,7 @@ namespace Receita.Domain.Migrations
                         .HasMaxLength(20);
 
                     b.HasKey("Id")
-                        .HasName("Id");
+                        .HasName("Pk_Usuario_Id");
 
                     b.ToTable("tbUsuario");
                 });

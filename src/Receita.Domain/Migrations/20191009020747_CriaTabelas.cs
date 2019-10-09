@@ -3,16 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Receita.Domain.Migrations
 {
-    public partial class PrimeiroMigration : Migration
+    public partial class CriaTabelas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "Receita");
-
             migrationBuilder.CreateTable(
                 name: "tbCategoria",
-                schema: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -22,12 +18,11 @@ namespace Receita.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Id", x => x.Id);
+                    table.PrimaryKey("Pk_Categoria_Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tbGrupo",
-                schema: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -36,12 +31,11 @@ namespace Receita.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Id", x => x.Id);
+                    table.PrimaryKey("Pk_Grupo_Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tbReceita",
-                schema: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -58,75 +52,54 @@ namespace Receita.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Id", x => x.Id);
+                    table.PrimaryKey("Pk_Receita_Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tbStatus",
-                schema: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Desc_Status = table.Column<string>(maxLength: 10, nullable: true)
+                    Descricao = table.Column<string>(maxLength: 10, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Id", x => x.Id);
+                    table.PrimaryKey("Pk_Status_Id", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tbUsuario",
-                schema: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Nome = table.Column<string>(maxLength: 20, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: true),
-                    StatusId = table.Column<int>(nullable: true),
-                    IdPapel = table.Column<int>(maxLength: 10, nullable: false)
+                    IdGrupo = table.Column<int>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("Id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_tbUsuario_tbStatus_StatusId",
-                        column: x => x.StatusId,
-                        principalSchema: "Receita",
-                        principalTable: "tbStatus",
-                        principalColumn: "IdStatus",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("Pk_Usuario_Id", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_tbUsuario_Status",
-                schema: "Receita",
-                table: "tbUsuario",
-                column: "StatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "tbCategoria",
-                schema: "Receita");
+                name: "tbCategoria");
 
             migrationBuilder.DropTable(
-                name: "tbPapel",
-                schema: "Receita");
+                name: "tbGrupo");
 
             migrationBuilder.DropTable(
-                name: "tbReceita",
-                schema: "Receita");
+                name: "tbReceita");
 
             migrationBuilder.DropTable(
-                name: "tbUsuario",
-                schema: "Receita");
+                name: "tbStatus");
 
             migrationBuilder.DropTable(
-                name: "tbStatus",
-                schema: "Receita");
+                name: "tbUsuario");
         }
     }
 }
