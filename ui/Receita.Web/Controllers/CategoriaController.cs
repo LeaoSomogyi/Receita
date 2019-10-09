@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Receita.Domain.Model;
+using Receita.Domain.Models;
 using Receita.Web.Util;
 using System;
 using System.Collections.Generic;

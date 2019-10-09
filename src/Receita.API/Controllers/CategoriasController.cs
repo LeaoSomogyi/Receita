@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Receita.Domain.Context;
-using Receita.Domain.Model;
+using Receita.Domain.Models;
+using Receita.Domain.Services.Categorias;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Receita.API.Controllers
@@ -13,19 +11,19 @@ namespace Receita.API.Controllers
     [ApiController]
     public class CategoriasController : ControllerBase
     {
-        private readonly ReceitaContext _context;
+        private readonly ICategoriaService _service;
 
-        public CategoriasController(ReceitaContext context)
+        public CategoriasController(ICategoriaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> Get()
+        public async Task<ActionResult<IList<Categoria>>> GetAsync()
         {
             try
             {
-                var categorias = _context.Categorias.AsEnumerable();
+                var categorias = await _service.GetAllAsync();
                 return new OkObjectResult(categorias);
             }
             catch (Exception ex)
@@ -35,11 +33,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> Get(int id)
+        public async Task<ActionResult<Categoria>> GetAsync(int id)
         {
             try
             {
-                var categorias = await _context.Categorias.FindAsync(id);
+                var categorias = await _service.GetByIdAsync(id); ;
 
                 if (categorias != null)
                 {
@@ -56,13 +54,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Categoria>> Post(Categoria categoria)
+        public async Task<ActionResult<Categoria>> PostAsync(Categoria categoria)
         {
             try
             {
-                _context.Categorias.Add(categoria);
-                var total = await _context.SaveChangesAsync();
-
+                await _service.AddAsync(categoria);
                 return new CreatedResult("", categoria);
             }
             catch (Exception ex)
@@ -72,14 +68,12 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Categoria categoria)
+        public async Task<IActionResult> PutAsync(int id, Categoria categoria)
         {
             try
             {
                 categoria.Id = id;
-                _context.Update(categoria);
-                _context.Entry(categoria).State = EntityState.Modified;
-                var total = await _context.SaveChangesAsync();
+                var total = await _service.UpdateAsync(categoria);
 
                 if (total > 0)
                 {
@@ -95,16 +89,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Categoria>> Delete(int id)
+        public async Task<ActionResult<Categoria>> DeleteAsync(int id)
         {
             try
             {
-                var categoria = await _context.Categorias.FindAsync(id);
-                if (categoria != null)
+                var total = await _service.RemoveAsync(id);
+                if (total > 0)
                 {
-                    _context.Categorias.Remove(categoria);
-                    await _context.SaveChangesAsync();
-
                     return new OkResult();
                 }
 

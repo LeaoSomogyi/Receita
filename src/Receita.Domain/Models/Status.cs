@@ -1,4 +1,4 @@
-﻿namespace Receita.Domain.Model
+﻿namespace Receita.Domain.Models
 {
     public class Status
     {

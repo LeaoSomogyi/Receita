@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Receita.Domain.Context;
-using Receita.Domain.Model;
+using Receita.Domain.Models;
+using Receita.Domain.Services.Usuarios;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Receita.API.Controllers
@@ -13,19 +11,19 @@ namespace Receita.API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly ReceitaContext _context;
+        private readonly IUsuarioService _service;
 
-        public UsuariosController(ReceitaContext context)
+        public UsuariosController(IUsuarioService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Usuario>> Get()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetAsync()
         {
             try
             {
-                var usuarios = _context.Usuarios.AsEnumerable();
+                var usuarios = await _service.GetAllAsync();
                 return new OkObjectResult(usuarios);
             }
             catch (Exception ex)
@@ -35,11 +33,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> Get(int id)
+        public async Task<ActionResult<Usuario>> GetByIdAsync(int id)
         {
             try
             {
-                var usuario = await _context.Usuarios.FindAsync(id);
+                var usuario = await _service.GetByIdAsync(id);
                 if (usuario != null)
                 {
                     return new OkObjectResult(usuario);    
@@ -54,12 +52,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Post(Usuario usuario)
+        public async Task<ActionResult<Usuario>> PostAsync(Usuario usuario)
         {
             try
             {
-                _context.Usuarios.Add(usuario);
-                var total = await _context.SaveChangesAsync();
+                var total = await _service.AddAsync(usuario);
 
                 return new OkObjectResult(usuario);
             }
@@ -70,14 +67,12 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Usuario usuario)
+        public async Task<IActionResult> PutAsync(int id, Usuario usuario)
         {
             try
             {
                 usuario.Id = id;
-                _context.Update(usuario);
-                _context.Entry(usuario).State = EntityState.Modified;
-                var total = await _context.SaveChangesAsync();
+                var total = await _service.UpdateAsync(usuario);
 
                 if (total > 0)
                 {
@@ -93,16 +88,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuario>> Delete(int id)
+        public async Task<ActionResult<Usuario>> DeleteAsync(int id)
         {
             try
             {
-                var usuario = await _context.Usuarios.FindAsync(id);
-                if (usuario != null)
+                var total = await _service.RemoveAsync(id);
+                if (total > 0)
                 {
-                    _context.Usuarios.Remove(usuario);
-                    await _context.SaveChangesAsync();
-                    
                     return new OkResult();
                 }
 

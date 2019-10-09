@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Receita.Domain.Context;
+using Receita.Domain.Services.Receitas;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Models = Receita.Domain.Model;
+using Models = Receita.Domain.Models;
 
 namespace Receita.API.Controllers
 {
@@ -13,20 +11,20 @@ namespace Receita.API.Controllers
     [ApiController]
     public class ReceitasController : ControllerBase
     {
-        private readonly ReceitaContext _context;
+        private readonly IReceitaService _service;
 
-        public ReceitasController(ReceitaContext context)
+        public ReceitasController(IReceitaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Receita>> Get()
+        public async Task<ActionResult<IList<Models.Receita>>> GetAsync()
         {
             try
             {
-                var receita = _context.Receitas.AsEnumerable();
-                return new OkObjectResult(receita);
+                var receitas = await _service.GetAllAsync();
+                return new OkObjectResult(receitas);
             }
             catch (Exception ex)
             {
@@ -35,11 +33,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Receita>> Get(int id)
+        public async Task<ActionResult<Models.Receita>> GetByIdAsync(int id)
         {
             try
             {
-                var receita = await _context.Receitas.FindAsync(id);
+                var receita = await _service.GetByIdAsync(id);
                 if (receita != null)
                 {
                     return new OkObjectResult(receita);
@@ -54,12 +52,11 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Models.Receita>> Post(Models.Receita receita)
+        public async Task<ActionResult<Models.Receita>> PostAsync(Models.Receita receita)
         {
             try
             {
-                _context.Receitas.Add(receita);
-                await _context.SaveChangesAsync();
+                await _service.AddAsync(receita);
 
                 return new CreatedResult("", receita);
             }
@@ -70,14 +67,12 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Models.Receita receita)
+        public async Task<IActionResult> PutAsync(int id, Models.Receita receita)
         {
             try
             {
                 receita.Id = id;
-                _context.Update(receita);
-                _context.Entry(receita).State = EntityState.Modified;
-                var total = await _context.SaveChangesAsync();
+                var total = await _service.UpdateAsync(receita);
 
                 if (total > 0)
                 {
@@ -93,16 +88,13 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Models.Receita>> Delete(int id)
+        public async Task<ActionResult<Models.Receita>> DeleteAsync(int id)
         {
             try
             {
-                var receita = await _context.Receitas.FindAsync(id);
-                if (receita != null)
+                var total = await _service.RemoveAsync(id);
+                if (total > 0)
                 {
-                    _context.Receitas.Remove(receita);
-                    await _context.SaveChangesAsync();
-
                     return new OkResult();
                 }
 
