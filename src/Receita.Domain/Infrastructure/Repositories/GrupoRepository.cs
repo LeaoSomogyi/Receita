@@ -1,14 +1,15 @@
-﻿using Receita.Domain.Infrastructure.Context;
+﻿using Microsoft.EntityFrameworkCore;
 using Receita.Domain.Infrastructure.Repositories.Base;
+using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
 
 namespace Receita.Domain.Infrastructure.Repositories
 {
-    internal class GrupoRepository : RepositoryBase<Grupo>
+    public class GrupoRepository : RepositoryBase<Grupo>, IGrupoRepository
     {
-        private readonly ReceitaContext _context;
+        private readonly DbContext _context;
 
-        public GrupoRepository(ReceitaContext context) : base(context)
+        public GrupoRepository(DbContext context) : base(context)
         {
             _context = context;
         }

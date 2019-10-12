@@ -1,22 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Receita.Domain.Infrastructure.Repositories.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Receita.Domain.Infrastructure.Context;
-using Receita.Infrastructure.Repositories;
 
 namespace Receita.Domain.Services.Status
 {
     public class StatusService : IStatusService
     {
-        private readonly StatusRepository _repository;
+        private readonly IStatusRepository _repository;
 
-        public StatusService(ReceitaContext context)
+        public StatusService(IStatusRepository repository)
         {
-            _repository = new StatusRepository(context);
+            _repository = repository;
         }
 
         public async Task<int> AddAsync(Models.Status status)
         {
-            if(status != null)
+            if (status != null)
             {
                 return await _repository.AddAsync(status);
             }

@@ -1,6 +1,4 @@
-﻿using Receita.Domain.Infrastructure.Context;
-using Receita.Domain.Models;
-using Receita.Infrastructure.Repositories;
+﻿using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,15 +6,16 @@ namespace Receita.Domain.Services.Receitas
 {
     public class ReceitaService : IReceitaService
     {
-        private readonly ReceitaRepository _repository;
-        public ReceitaService(ReceitaContext context)
+        private readonly IReceitaRepository _repository;
+
+        public ReceitaService(IReceitaRepository repository)
         {
-            _repository = new ReceitaRepository(context);
+            _repository = repository;
         }
 
         public async Task<int> AddAsync(Models.Receita receita)
         {
-            if(receita != null)
+            if (receita != null)
             {
                 return await _repository.AddAsync(receita);
             }
@@ -41,7 +40,7 @@ namespace Receita.Domain.Services.Receitas
 
         public async Task<int> RemoveAsync(int id)
         {
-            if(id > 0)
+            if (id > 0)
             {
                 return await _repository.RemoveAsync(id);
             }
@@ -51,7 +50,7 @@ namespace Receita.Domain.Services.Receitas
 
         public async Task<int> UpdateAsync(Models.Receita receita)
         {
-            if(receita != null)
+            if (receita != null)
             {
                 return await _repository.UpdateAsync(receita);
             }

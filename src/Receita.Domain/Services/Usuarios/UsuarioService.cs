@@ -1,24 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Receita.Domain.Infrastructure.Context;
+﻿using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
-using Receita.Infrastructure.Repositories;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Receita.Domain.Services.Usuarios
 {
     public class UsuarioService : IUsuarioService
     {
 
-        private readonly UsuarioRepository _repository;
+        private readonly IUsuarioRepository _repository;
 
-        public UsuarioService(ReceitaContext context)
+        public UsuarioService(IUsuarioRepository repository)
         {
-            _repository = new UsuarioRepository(context);
+            _repository = repository;
         }
 
         public async Task<int> AddAsync(Usuario usuario)
         {
-            if(usuario != null)
+            if (usuario != null)
             {
                 return await _repository.AddAsync(usuario);
             }

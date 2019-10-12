@@ -1,14 +1,15 @@
-﻿using Receita.Domain.Infrastructure.Context;
+﻿using Microsoft.EntityFrameworkCore;
 using Receita.Domain.Infrastructure.Repositories.Base;
+using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
 
-namespace Receita.Infrastructure.Repositories
+namespace Receita.Domain.Infrastructure.Repositories
 {
-    internal class UsuarioRepository : RepositoryBase<Usuario>
+    public class UsuarioRepository : RepositoryBase<Usuario>, IUsuarioRepository
     {
-        private readonly ReceitaContext _context;
+        private readonly DbContext _context;
 
-        public UsuarioRepository(ReceitaContext context) : base(context)
+        public UsuarioRepository(DbContext context) : base(context)
         {
             _context = context;
         }

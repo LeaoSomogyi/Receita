@@ -1,14 +1,15 @@
-﻿using Receita.Domain.Infrastructure.Context;
+﻿using Microsoft.EntityFrameworkCore;
 using Receita.Domain.Infrastructure.Repositories.Base;
+using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
 
-namespace Receita.Infrastructure.Repositories
+namespace Receita.Domain.Infrastructure.Repositories
 {
-    internal class StatusRepository : RepositoryBase<Status>
+    public class StatusRepository : RepositoryBase<Status>, IStatusRepository
     {
-        private readonly ReceitaContext _context;
+        private readonly DbContext _context;
 
-        public StatusRepository(ReceitaContext context) : base(context)
+        public StatusRepository(DbContext context) : base(context)
         {
             _context = context;
         }

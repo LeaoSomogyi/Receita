@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Receita.Domain.Infrastructure.Repositories.Base
 {
-    internal interface IRepositoryBase<T> where T : class
+    public interface IRepositoryBase<T> where T : class
     {
         Task<IList<T>> GetAllAsync();
         Task<T> GetById(int id);

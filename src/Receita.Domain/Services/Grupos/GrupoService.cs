@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Receita.Domain.Infrastructure.Context;
-using Receita.Domain.Infrastructure.Repositories;
+﻿using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Receita.Domain.Services.Grupos
 {
     public class GrupoService : IGrupoService
     {
-        private readonly GrupoRepository _repository;
+        private readonly IGrupoRepository _repository;
 
-        public GrupoService(ReceitaContext context)
+        public GrupoService(IGrupoRepository repository)
         {
-            _repository = new GrupoRepository(context);
+            _repository = repository;
         }
 
         public async Task<int> AddAsync(Grupo grupo)
@@ -37,7 +36,7 @@ namespace Receita.Domain.Services.Grupos
 
         public async Task<int> RemoveAsync(int id)
         {
-            if(id > 0)
+            if (id > 0)
             {
                 return await _repository.RemoveAsync(id);
             }
@@ -47,7 +46,7 @@ namespace Receita.Domain.Services.Grupos
 
         public async Task<int> UpdateAsync(Grupo grupo)
         {
-            if(grupo != null)
+            if (grupo != null)
             {
                 return await _repository.UpdateAsync(grupo);
             }

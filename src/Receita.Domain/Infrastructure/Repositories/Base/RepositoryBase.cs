@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Receita.Domain.Infrastructure.Repositories.Base
 {
-    internal abstract class RepositoryBase<T> : IRepositoryBase<T>, IDisposable where T : class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T>, IDisposable where T : class
     {
+        private DbContext _context;
 
-        private ReceitaContext _context;
-
-        public RepositoryBase(ReceitaContext context)
+        public RepositoryBase(DbContext context)
         {
             _context = context;
         }

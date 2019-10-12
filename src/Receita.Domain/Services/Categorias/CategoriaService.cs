@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Receita.Domain.Infrastructure.Context;
-using Receita.Domain.Infrastructure.Repositories;
+﻿using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using Receita.Domain.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Receita.Domain.Services.Categorias
 {
     public class CategoriaService : ICategoriaService
     {
-        private readonly CategoriaRepository _repository;
+        private readonly ICategoriaRepository _repository;
 
-        public CategoriaService(ReceitaContext context)
+        public CategoriaService(ICategoriaRepository repository)
         {
-            _repository = new CategoriaRepository(context);
+            _repository = repository;
         }
 
         public async Task<int> AddAsync(Categoria categoria)
@@ -37,7 +36,7 @@ namespace Receita.Domain.Services.Categorias
 
         public async Task<int> RemoveAsync(int id)
         {
-            if(id > 0)
+            if (id > 0)
             {
                 return await _repository.RemoveAsync(id);
             }
@@ -47,7 +46,7 @@ namespace Receita.Domain.Services.Categorias
 
         public async Task<int> UpdateAsync(Categoria categoria)
         {
-            if(categoria != null)
+            if (categoria != null)
             {
                 return await _repository.UpdateAsync(categoria);
             }

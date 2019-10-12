@@ -1,25 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Receita.Domain.Infrastructure.Context;
 using Receita.Domain.Infrastructure.Repositories.Base;
+using Receita.Domain.Infrastructure.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models = Receita.Domain.Models;
 
-namespace Receita.Infrastructure.Repositories
+namespace Receita.Domain.Infrastructure.Repositories
 {
-    internal class ReceitaRepository : RepositoryBase<Models.Receita>
+    public class ReceitaRepository : RepositoryBase<Models.Receita>, IReceitaRepository
     {
-        private readonly ReceitaContext _context;
+        private readonly DbContext _context;
 
-        public ReceitaRepository(ReceitaContext context) : base(context)
+        public ReceitaRepository(DbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Models.Receita>> GetPorCategoriaAsync(int id) 
+        public async Task<IEnumerable<Models.Receita>> GetPorCategoriaAsync(int id)
         {
-            return await _context.Receitas.Where(r => r.IdCategoria == id).ToListAsync();
+            return await _context.Set<Models.Receita>().Where(r => r.IdCategoria == id).ToListAsync();
         }
     }
 }
