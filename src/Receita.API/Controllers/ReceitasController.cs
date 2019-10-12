@@ -2,6 +2,7 @@
 using Receita.Domain.Services.Receitas;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Models = Receita.Domain.Models;
 
@@ -41,6 +42,27 @@ namespace Receita.API.Controllers
                 if (receita != null)
                 {
                     return new OkObjectResult(receita);
+                }
+
+                return new NotFoundResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("categoria/{id}")]
+        public async Task<ActionResult<Models.Receita>> GetByCategoriaAsync(int id)
+        {
+            try
+            {
+                var receitas = await _service.GetPorCategoriaAsync(id);
+
+                if (receitas.Count() > 0)
+                {
+                    return new OkObjectResult(receitas);
                 }
 
                 return new NotFoundResult();

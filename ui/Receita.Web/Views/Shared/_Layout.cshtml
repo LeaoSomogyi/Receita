@@ -19,32 +19,8 @@
 </head>
 <body>
     <main role="main">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="container">
-                <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">Receitas</a>
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Receitas" asp-action="Index">Início<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Receitas</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-user">
-                                <a class="dropdown-item" asp-area="" asp-controller="Blog" asp-action="Create">Criar</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Blog" asp-action="List">Consultar</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Usuários</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-user">
-                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Create">Criar</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="List">Consultar</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @await Component.InvokeAsync("Menu")
+        <div class="row mb-2" style="height: 20px;"></div>
         @RenderBody()
     </main>
 

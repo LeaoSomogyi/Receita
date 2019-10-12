@@ -86,6 +86,32 @@
 					"response": []
 				},
 				{
+					"name": "Listar Por Categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{receita_api_url}}/api/receitas/categoria/:id",
+							"host": [
+								"{{receita_api_url}}"
+							],
+							"path": [
+								"api",
+								"receitas",
+								"categoria",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Atualizar",
 					"request": {
 						"method": "PUT",

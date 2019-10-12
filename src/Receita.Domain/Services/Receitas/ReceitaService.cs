@@ -1,4 +1,5 @@
 ﻿using Receita.Domain.Infrastructure.Context;
+using Receita.Domain.Models;
 using Receita.Infrastructure.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,9 +29,14 @@ namespace Receita.Domain.Services.Receitas
             return await _repository.GetAllAsync();
         }
 
-        public Task<Models.Receita> GetByIdAsync(int id)
+        public async Task<Models.Receita> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
+        }
+
+        public async Task<IEnumerable<Models.Receita>> GetPorCategoriaAsync(int id)
+        {
+            return await _repository.GetPorCategoriaAsync(id);
         }
 
         public async Task<int> RemoveAsync(int id)

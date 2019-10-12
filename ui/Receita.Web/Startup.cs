@@ -34,6 +34,8 @@ namespace Receita.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddMemoryCache();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt =>
                 {
@@ -81,9 +83,17 @@ namespace Receita.Web
 
         private void ConfigureHttpClients(IServiceCollection services) 
         {
+            var apiUrl = new Uri(Configuration["ApiUrl"]);
+
             services.AddHttpClient<IReceitaClient, ReceitaClient>(client =>
             {
-                client.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                client.BaseAddress = apiUrl;
+
+            }).AddPolicyHandler(GetRetryPolicy());
+
+            services.AddHttpClient<ICategoriaClient, CategoriaClient>(client =>
+            {
+                client.BaseAddress = apiUrl;
 
             }).AddPolicyHandler(GetRetryPolicy());
         }

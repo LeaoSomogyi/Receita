@@ -7,6 +7,7 @@ namespace Receita.Domain.Services.Receitas
     {
         Task<IList<Models.Receita>> GetAllAsync();
         Task<Models.Receita> GetByIdAsync(int id);
+        Task<IEnumerable<Models.Receita>> GetPorCategoriaAsync(int id);
         Task<int> AddAsync(Models.Receita receita);
         Task<int> UpdateAsync(Models.Receita receita);
         Task<int> RemoveAsync(int id);

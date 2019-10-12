@@ -17,6 +17,30 @@ namespace Receita.Web.HttpClients
             _httpClient = httpClient;
         }
 
+        public async Task<IEnumerable<ReceitaViewModel>> GetPorCategoriaAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/receitas/categoria/{id}");
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadAsJsonAsync<IEnumerable<ReceitaViewModel>>();
+            }
+
+            return new List<ReceitaViewModel>();
+        }
+
+        public async Task<ReceitaViewModel> GetPorIdAsync(int id)
+        {
+            var response = await _httpClient.GetAsync($"api/receitas/{id}");
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadAsJsonAsync<ReceitaViewModel>();
+            }
+
+            return new ReceitaViewModel();
+        }
+
         public async Task<IEnumerable<ReceitaViewModel>> GetReceitasAsync()
         {
             var response = await _httpClient.GetAsync("api/receitas");

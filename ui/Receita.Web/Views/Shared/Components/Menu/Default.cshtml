@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CategoriaViewModel>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container">
+        <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Receitas</a>
+            <ul class="navbar-nav flex-grow-1">
+                @foreach (var categoria in Model)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Receita" asp-action="PorCategoria" asp-route-id="@categoria.Id" title="@categoria.Descricao">@categoria.Titulo<span class="sr-only">(current)</span></a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>

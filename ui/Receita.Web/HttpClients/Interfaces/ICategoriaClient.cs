@@ -1,0 +1,11 @@
+﻿using Receita.Web.ViewModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Receita.Web.HttpClients.Interfaces
+{
+    public interface ICategoriaClient
+    {
+        Task<IEnumerable<CategoriaViewModel>> GetCategoriasAsync();
+    }
+}
