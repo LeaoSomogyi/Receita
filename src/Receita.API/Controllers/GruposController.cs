@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Receita.API.Models;
 using Receita.Domain.Models;
 using Receita.Domain.Services.Grupos;
 using System;
@@ -12,10 +14,12 @@ namespace Receita.API.Controllers
     public class GruposController : ControllerBase
     {
         private readonly IGrupoService _service;
+        private readonly IMapper _mapper;
 
-        public GruposController(IGrupoService service)
+        public GruposController(IMapper mapper,IGrupoService service)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -52,14 +56,15 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Grupo>> PostAsync(Grupo grupo)
+        public async Task<ActionResult<Grupo>> PostAsync(GrupoModel grupo)
         {
             try
             {
-                var total = await _service.AddAsync(grupo);
+                var mapper = _mapper.Map<Grupo>(grupo);
+                var total = await _service.AddAsync(mapper);
                 if (total > 0)
                 {
-                    return new CreatedResult("", grupo);
+                    return new CreatedResult("", mapper);
                 }
                 return new AcceptedResult();
             }
@@ -70,16 +75,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutAsync(int id, Grupo grupo)
+        public async Task<ActionResult> PutAsync(int id, GrupoModel grupo)
         {
             try
             {
-                grupo.Id = id;
-                var total = await _service.UpdateAsync(grupo);
+                var mapper = _mapper.Map<Grupo>(grupo);
+                mapper.Id = id;
+                var total = await _service.UpdateAsync(mapper);
 
                 if (total > 0) 
                 {
-                    return new OkObjectResult(grupo);
+                    return new OkObjectResult(mapper);
                 } 
                 
                 return new NotFoundResult();

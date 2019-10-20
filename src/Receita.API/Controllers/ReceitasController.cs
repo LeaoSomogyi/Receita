@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Receita.API.Models;
 using Receita.Domain.Services.Receitas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models = Receita.Domain.Models;
+using Model = Receita.Domain.Models;
 
 namespace Receita.API.Controllers
 {
@@ -13,14 +15,16 @@ namespace Receita.API.Controllers
     public class ReceitasController : ControllerBase
     {
         private readonly IReceitaService _service;
+        private readonly IMapper _mapper;
 
-        public ReceitasController(IReceitaService service)
+        public ReceitasController(IMapper mapper,IReceitaService service)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<Models.Receita>>> GetAsync()
+        public async Task<ActionResult<IList<Model.Receita>>> GetAsync()
         {
             try
             {
@@ -34,7 +38,7 @@ namespace Receita.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Receita>> GetByIdAsync(int id)
+        public async Task<ActionResult<Model.Receita>> GetByIdAsync(int id)
         {
             try
             {
@@ -54,7 +58,7 @@ namespace Receita.API.Controllers
 
         [HttpGet]
         [Route("categoria/{id}")]
-        public async Task<ActionResult<Models.Receita>> GetByCategoriaAsync(int id)
+        public async Task<ActionResult<Model.Receita>> GetByCategoriaAsync(int id)
         {
             try
             {
@@ -74,14 +78,15 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Models.Receita>> PostAsync(Models.Receita receita)
+        public async Task<ActionResult<Model.Receita>> PostAsync(ReceitaModel receita)
         {
             try
             {
-                var total = await _service.AddAsync(receita);
+                var mapper = _mapper.Map<Model.Receita>(receita);
+                var total = await _service.AddAsync(mapper);
                 if (total > 0)
                 {
-                    return new CreatedResult("", receita);
+                    return new CreatedResult("", mapper);
                 }
                 return new AcceptedResult();
             }
@@ -92,16 +97,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, Models.Receita receita)
+        public async Task<IActionResult> PutAsync(int id, ReceitaModel receita)
         {
             try
             {
-                receita.Id = id;
-                var total = await _service.UpdateAsync(receita);
+                var mapper = _mapper.Map<Model.Receita>(receita);
+                mapper.Id = id;
+                var total = await _service.UpdateAsync(mapper);
 
                 if (total > 0)
                 {
-                    return new OkObjectResult(receita);
+                    return new OkObjectResult(mapper);
                 }
 
                 return new NotFoundResult();
@@ -113,7 +119,7 @@ namespace Receita.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Models.Receita>> DeleteAsync(int id)
+        public async Task<ActionResult<Model.Receita>> DeleteAsync(int id)
         {
             try
             {

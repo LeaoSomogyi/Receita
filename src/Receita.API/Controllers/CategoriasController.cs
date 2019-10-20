@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Receita.API.Models;
 using Receita.Domain.Models;
 using Receita.Domain.Services.Categorias;
 using System;
@@ -12,10 +14,12 @@ namespace Receita.API.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly ICategoriaService _service;
+        private readonly IMapper _mapper;
 
-        public CategoriasController(ICategoriaService service)
+        public CategoriasController(IMapper mapper,ICategoriaService service)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -54,14 +58,15 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Categoria>> PostAsync([FromBody] Categoria categoria)
+        public async Task<ActionResult<Categoria>> PostAsync([FromBody] CategoriaModel categoria)
         {
             try
             {
-                var total = await _service.AddAsync(categoria);
+                var mapper = _mapper.Map<Categoria>(categoria);
+                var total = await _service.AddAsync(mapper);
                 if (total > 0)
                 {
-                    return new CreatedResult("", categoria);
+                    return new CreatedResult("", mapper);
                 }
                 return new AcceptedResult();
             }
@@ -72,16 +77,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Categoria categoria)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] CategoriaModel categoria)
         {
             try
             {
-                categoria.Id = id;
-                var total = await _service.UpdateAsync(categoria);
+                var mapper = _mapper.Map<Categoria>(categoria);
+                mapper.Id = id;
+                var total = await _service.UpdateAsync(mapper);
 
                 if (total > 0)
                 {
-                    return new OkObjectResult(categoria);
+                    return new OkObjectResult(mapper);
                 }
 
                 return new NotFoundResult();

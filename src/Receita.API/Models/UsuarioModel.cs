@@ -1,8 +1,7 @@
-﻿namespace Receita.Domain.Models
+﻿namespace Receita.API.Models
 {
-    public class Usuario
+    public class UsuarioModel
     {
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public int IdGrupo { get; set; }

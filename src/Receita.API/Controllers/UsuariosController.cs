@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Receita.API.Models;
 using Receita.Domain.Models;
 using Receita.Domain.Services.Usuarios;
 using System;
@@ -12,10 +14,12 @@ namespace Receita.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _service;
+        private readonly IMapper _mapper;
 
-        public UsuariosController(IUsuarioService service)
+        public UsuariosController(IMapper mapper, IUsuarioService service)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -52,14 +56,15 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Usuario>> PostAsync(Usuario usuario)
+        public async Task<ActionResult<Usuario>> PostAsync(UsuarioModel usuario)
         {
             try
             {
-                var total = await _service.AddAsync(usuario);
+                var mapper = _mapper.Map<Usuario>(usuario);
+                var total = await _service.AddAsync(mapper);
                 if (total > 0)
                 {
-                    return new CreatedResult("", usuario);
+                    return new CreatedResult("", mapper);
                 }
                 return new AcceptedResult();
             }
@@ -70,16 +75,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, Usuario usuario)
+        public async Task<IActionResult> PutAsync(int id, UsuarioModel usuario)
         {
             try
             {
-                usuario.Id = id;
-                var total = await _service.UpdateAsync(usuario);
+                var mapper = _mapper.Map<Usuario>(usuario);
+                mapper.Id = id;
+                var total = await _service.UpdateAsync(mapper);
 
                 if (total > 0)
                 {
-                    return new OkObjectResult(usuario);
+                    return new OkObjectResult(mapper);
                 }
 
                 return new NotFoundResult();

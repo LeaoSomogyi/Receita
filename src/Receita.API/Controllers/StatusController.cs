@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Receita.API.Models;
 using Receita.Domain.Models;
 using Receita.Domain.Services.Status;
 using System;
@@ -12,10 +14,12 @@ namespace Receita.API.Controllers
     public class StatusController : ControllerBase
     {
         private readonly IStatusService _service;
+        private readonly IMapper _mapper;
 
-        public StatusController(IStatusService service)
+        public StatusController(IMapper mapper, IStatusService service)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -52,14 +56,15 @@ namespace Receita.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Status>> PostAsync(Status status)
+        public async Task<ActionResult<Status>> PostAsync(StatusModel status)
         {
             try
             {
-                var total = await _service.AddAsync(status);
+                var mapper = _mapper.Map<Status>(status);
+                var total = await _service.AddAsync(mapper);
                 if (total > 0)
                 {
-                    return new CreatedResult("", status);
+                    return new CreatedResult("", mapper);
                 }
                 return new AcceptedResult();
             }
@@ -70,16 +75,17 @@ namespace Receita.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, Status status)
+        public async Task<IActionResult> PutAsync(int id, StatusModel status)
         {
             try
             {
-                status.Id = id;
-                var total = await _service.UpdateAsync(status);
+                var mapper = _mapper.Map<Status>(status);
+                mapper.Id = id;
+                var total = await _service.UpdateAsync(mapper);
 
                 if (total > 0)
                 {
-                    return new OkObjectResult(status);
+                    return new OkObjectResult(mapper);
                 }
 
                 return new NotFoundResult();
