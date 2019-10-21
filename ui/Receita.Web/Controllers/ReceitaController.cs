@@ -77,6 +77,9 @@ namespace Receita.Web.Controllers
         {
             var receita = await _receitaClient.GetPorIdAsync(id);
 
+            ViewBag.Categorias = await _categoriaClient.GetCategoriasToViewAsync();
+            ViewBag.Usuarios = await _usuarioAdmClient.GetAllToViewAsync();
+
             return View("Create", receita);
         }
 

@@ -62,7 +62,7 @@ namespace Receita.Web.HttpClients
 
         public async Task<bool> SalvarAsync(ReceitaViewModel receita) 
         {
-            var response = await _httpClient.PostAsJsonAsync("api/receitas", receita);
+            var response = await _httpClient.PostAsync("api/receitas", receita.SerializeAsJson());
 
             return response.StatusCode == HttpStatusCode.Created;
         }

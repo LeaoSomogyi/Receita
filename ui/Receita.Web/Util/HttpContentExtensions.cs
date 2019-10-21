@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Receita.Web.Util
@@ -35,6 +36,12 @@ namespace Receita.Web.Util
             string json = await content.ReadAsStringAsync();
             T value = JsonConvert.DeserializeObject<T>(json, SerializerSettings);
             return value;
+        }
+
+        public static HttpContent SerializeAsJson(this object value)
+        {
+            var serialized = JsonConvert.SerializeObject(value, SerializerSettings);
+            return new StringContent(serialized, Encoding.Default, "application/json");
         }
     }
 }
