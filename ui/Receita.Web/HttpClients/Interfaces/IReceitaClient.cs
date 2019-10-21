@@ -11,5 +11,9 @@ namespace Receita.Web.HttpClients.Interfaces
         Task<IEnumerable<ReceitaViewModel>> GetPorCategoriaAsync(int id);
 
         Task<ReceitaViewModel> GetPorIdAsync(int id);
+
+        Task<bool> DeleteAsync(int id);
+
+        Task<bool> SalvarAsync(ReceitaViewModel receita);
     }
 }

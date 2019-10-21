@@ -52,5 +52,19 @@ namespace Receita.Web.HttpClients
 
             return new List<ReceitaViewModel>();
         }
+
+        public async Task<bool> DeleteAsync(int id) 
+        {
+            var response = await _httpClient.DeleteAsync($"api/receitas/{id}");
+
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public async Task<bool> SalvarAsync(ReceitaViewModel receita) 
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/receitas", receita);
+
+            return response.StatusCode == HttpStatusCode.Created;
+        }
     }
 }

@@ -1,0 +1,17 @@
+﻿@model ReceitaViewModel
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+<div class="container">
+    <section class="row">
+        <div class="col-12">
+            <h1>@Model.Titulo</h1>
+            <img src="data:image/png;base64,@Model.Foto" class="bd-placeholder-img" width="200" height="250" />
+            <p>@Model.Ingredientes</p>
+            <p>@Model.ModoDePreparo</p>
+            <a href="/">Voltar</a>
+        </div>        
+    </section>
+</div>
+

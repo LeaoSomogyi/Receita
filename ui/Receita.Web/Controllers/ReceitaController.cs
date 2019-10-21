@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Receita.Web.HttpClients.Interfaces;
+using Receita.Web.ViewModels;
 using System.Threading.Tasks;
 
 namespace Receita.Web.Controllers
@@ -8,10 +8,16 @@ namespace Receita.Web.Controllers
     public class ReceitaController : Controller
     {
         private readonly IReceitaClient _receitaClient;
+        private readonly ICategoriaClient _categoriaClient;
+        private readonly IUsuarioAdmClient _usuarioAdmClient;
 
-        public ReceitaController(IReceitaClient receitaClient)
+        public ReceitaController(IReceitaClient receitaClient, 
+            ICategoriaClient categoriaClient,
+            IUsuarioAdmClient usuarioAdmClient)
         {
             _receitaClient = receitaClient;
+            _categoriaClient = categoriaClient;
+            _usuarioAdmClient = usuarioAdmClient;
         }
 
         // GET: Receita
@@ -31,25 +37,32 @@ namespace Receita.Web.Controllers
         }
 
         // GET: Receita/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var receita = await _receitaClient.GetPorIdAsync(id);
+
+            return View(receita);
         }
 
         // GET: Receita/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Categorias = await _categoriaClient.GetCategoriasToViewAsync();
+            ViewBag.Usuarios = await _usuarioAdmClient.GetAllToViewAsync();
+
             return View();
         }
 
         // POST: Receita/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(ReceitaViewModel receitaViewModel)
         {
             try
             {
-                // TODO: Add insert logic here
+                var receita = await receitaViewModel.ConverterArquivoParaBase64();
+
+                await _receitaClient.SalvarAsync(receita);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -60,49 +73,33 @@ namespace Receita.Web.Controllers
         }
 
         // GET: Receita/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
-        }
+            var receita = await _receitaClient.GetPorIdAsync(id);
 
-        // POST: Receita/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View("Create", receita);
         }
 
         // GET: Receita/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var response = await _receitaClient.DeleteAsync(id);
+
+            if (response)
+                TempData["msg"] = "Receita removida com sucesso!";
+            else
+                TempData["erro"] = "Problemas ao remover receita";
+
+            TempData.Keep();
+
+            return RedirectToAction(nameof(List));
         }
 
-        // POST: Receita/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> List()
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var receitas = await _receitaClient.GetReceitasAsync();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View(receitas);
         }
     }
 }

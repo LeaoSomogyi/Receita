@@ -3,8 +3,15 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
         <div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Receitas</a>
+            <a class="navbar-brand" asp-controller="Receita" asp-action="Index">Receitas</a>
             <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-user" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-cog"></i> Administração</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-user">
+                        <a class="dropdown-item" asp-area="" asp-controller="Receita" asp-action="Create">Criar</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Receita" asp-action="List">Consultar</a>
+                    </div>
+                </li>
                 @foreach (var categoria in Model)
                 {
                     <li class="nav-item">

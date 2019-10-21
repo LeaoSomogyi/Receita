@@ -96,6 +96,12 @@ namespace Receita.Web
                 client.BaseAddress = apiUrl;
 
             }).AddPolicyHandler(GetRetryPolicy());
+
+            services.AddHttpClient<IUsuarioAdmClient, UsuarioAdmClient>(client =>
+            {
+                client.BaseAddress = apiUrl;
+
+            }).AddPolicyHandler(GetRetryPolicy());
         }
 
         private IAsyncPolicy<HttpResponseMessage> GetRetryPolicy() 

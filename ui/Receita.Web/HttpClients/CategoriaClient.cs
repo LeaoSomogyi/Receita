@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 using Receita.Web.HttpClients.Interfaces;
 using Receita.Web.Util;
 using Receita.Web.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -43,6 +45,17 @@ namespace Receita.Web.HttpClients
             }
 
             return categorias;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetCategoriasToViewAsync()
+        {
+            var categorias = await GetCategoriasAsync();
+
+            return categorias.Select(c => new SelectListItem() 
+            {
+                Text = c.Titulo,
+                Value = c.Id.ToString()
+            });
         }
     }
 }
